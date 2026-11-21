@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #FFF8EF;
+    color: #171412;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer utilities {
+  /* Outline Typography as seen in the brand identity */
+  .text-stroke-orange {
+    -webkit-text-stroke: 2px #FF7417;
+    color: transparent;
+  }
+  .text-stroke-orange-thick {
+    -webkit-text-stroke: 3px #FF7417;
+    color: transparent;
+  }
+  .text-stroke-orange-lg {
+    -webkit-text-stroke: 4px #FF7417;
+    color: transparent;
+  }
+  .text-stroke-peach {
+    -webkit-text-stroke: 2.5px #FFB58A;
+    color: transparent;
+  }
+  .text-stroke-black {
+    -webkit-text-stroke: 2px #171412;
+    color: transparent;
+  }
+  .text-stroke-dark-thick {
+    -webkit-text-stroke: 3.5px #171412;
+    color: transparent;
+  }
+  .text-stroke-white {
+    -webkit-text-stroke: 2px #FFFFFF;
+    color: transparent;
+  }
+
+  /* Paper & subtle wooden grain texture without child opacity bleed */
+  .bg-dot-pattern {
+    background-image: radial-gradient(rgba(56, 37, 28, 0.08) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+  
+  .bg-grid-pattern {
+    background-image: linear-gradient(to right, rgba(56, 37, 28, 0.06) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(56, 37, 28, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Retro editorial offset button and cards */
+  .box-solid-shadow {
+    box-shadow: 4px 4px 0px #171412;
+  }
+  .box-solid-shadow-lg {
+    box-shadow: 8px 8px 0px #171412;
+  }
+  .box-solid-shadow-orange {
+    box-shadow: 6px 6px 0px #FF7417;
+  }
+  .box-solid-shadow-hover {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .box-solid-shadow-hover:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #171412;
+  }
+  .box-solid-shadow-hover:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #171412;
+  }
+}
+
+/* Infinite Marquee Running Board Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+  will-change: transform;
+}
+
+/* Floating Animations for playful wooden elements */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(-12deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-9deg);
+  }
+}
+
+@keyframes float-slow-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(12deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(15deg);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.92;
+  }
+}
+
+.animate-float {
+  animation: float-slow 5s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-slow-reverse 6s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 3.5s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+/* Hide scroll layout in the rightmost part of the website */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
+  width: 0px;
+  height: 0px;
+}
