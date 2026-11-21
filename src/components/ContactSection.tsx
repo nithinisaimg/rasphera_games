@@ -37,16 +37,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
   };
 
   return (
-    <section id="contact" className="py-10 sm:py-12 md:py-16 relative bg-gradient-to-b from-rasphera-orange via-[#FF6E0F] to-[#E55B00] text-white overflow-hidden">
+    <section
+      id="contact"
+      className="min-h-screen w-full relative bg-gradient-to-b from-rasphera-orange via-[#FF6E0F] to-[#E55B00] text-white overflow-hidden flex flex-col justify-center items-center pt-20 sm:pt-24 pb-8 sm:pb-12 scroll-mt-0"
+    >
       
       {/* Background Graphic Accents */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10 my-auto">
         
-        {/* Main CTA Container - Scaled to fit screen comfortably */}
-        <div className="bg-[#FFF8EF] border-3 sm:border-4 border-rasphera-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-solid-xl text-rasphera-dark">
+        {/* Main CTA Container - Scaled to fit screen comfortably and centered */}
+        <div className="bg-[#FFF8EF] border-3 sm:border-4 border-rasphera-dark rounded-2xl sm:rounded-3xl p-5 sm:p-7 md:p-8 shadow-solid-xl text-rasphera-dark">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
             

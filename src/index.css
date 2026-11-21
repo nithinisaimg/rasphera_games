@@ -149,6 +149,10 @@
 }
 
 /* Hide scroll layout in the rightmost part of the website */
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */

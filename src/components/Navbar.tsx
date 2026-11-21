@@ -31,6 +31,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
     { name: 'Contact', href: '#contact' },
   ];
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      setIsMobileMenuOpen(false);
+      const targetId = href.substring(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.history.pushState(null, '', href);
+      }
+    }
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -79,7 +92,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               <a
                 key={link.name}
                 href={link.href}
-                className="font-body text-sm font-semibold text-rasphera-dark hover:text-rasphera-orange transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-rasphera-orange hover:after:w-full after:transition-all"
+                onClick={(e) => handleNavClick(e, link.href)}
+                className="font-body text-sm font-semibold text-rasphera-dark hover:text-rasphera-orange transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-rasphera-orange hover:after:w-full after:transition-all cursor-pointer"
               >
                 {link.name}
               </a>
@@ -123,8 +137,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display tracking-wide text-lg text-rasphera-dark hover:text-rasphera-orange border-b border-rasphera-peach/40 pb-2"
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className="font-display tracking-wide text-lg text-rasphera-dark hover:text-rasphera-orange border-b border-rasphera-peach/40 pb-2 cursor-pointer"
                 >
                   {link.name}
                 </a>
