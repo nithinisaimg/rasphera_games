@@ -49,6 +49,12 @@ export const TravelingDice: React.FC<TravelingDiceProps> = ({
       const sRect = startEl.getBoundingClientRect();
       const eRect = endEl.getBoundingClientRect();
 
+      // If dimensions are not yet laid out by browser, retry on next frame
+      if (sRect.width === 0 || eRect.width === 0) {
+        animFrameIdRef.current = requestAnimationFrame(updateMotion);
+        return;
+      }
+
       // Start and end positions relative to the container
       const startX = sRect.left - cRect.left;
       const startY = sRect.top - cRect.top;
@@ -114,16 +120,41 @@ export const TravelingDice: React.FC<TravelingDiceProps> = ({
     // Initial positioning calculation & font loading synchronization
     wakeLoop();
 
+    // Trigger multiple layout checks to handle font/asset rendering settling
+    const t1 = setTimeout(wakeLoop, 60);
+    const t2 = setTimeout(wakeLoop, 200);
+    const t3 = setTimeout(wakeLoop, 500);
+
     if (document.fonts) {
       document.fonts.ready.then(() => {
         wakeLoop();
       });
     }
 
+    // Observe size changes of the container and anchors
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => {
+        wakeLoop();
+      });
+      const container = containerRef.current;
+      const startEl = document.getElementById('hero-dice-anchor');
+      const endEl = document.getElementById('history-dice-target');
+      if (container) resizeObserver.observe(container);
+      if (startEl) resizeObserver.observe(startEl);
+      if (endEl) resizeObserver.observe(endEl);
+    }
+
     window.addEventListener('scroll', wakeLoop, { passive: true });
     window.addEventListener('resize', wakeLoop);
 
     return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
       window.removeEventListener('scroll', wakeLoop);
       window.removeEventListener('resize', wakeLoop);
       if (animFrameIdRef.current) {
@@ -148,14 +179,13 @@ export const TravelingDice: React.FC<TravelingDiceProps> = ({
         zIndex: 35,
         cursor: 'pointer',
         touchAction: 'manipulation',
-        transition: 'transform 0.04s linear',
         willChange: 'transform',
       }}
       className="group select-none"
     >
       <div
         className={`w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-rasphera-dark rounded-xl sm:rounded-2xl border-2 sm:border-3 border-rasphera-orange shadow-solid-lg flex items-center justify-center transform group-hover:scale-110 transition-transform ${
-          isRolling ? 'animate-spin' : ''
+          isRolling ? 'animate-spin' : 'animate-dice-float'
         }`}
       >
         {/* Mathematically centered dice face pips for all numbers (1-6) */}
@@ -215,9 +245,10 @@ export const TravelingDice: React.FC<TravelingDiceProps> = ({
         </svg>
       </div>
 
-      {/* Interactive Tooltip Pill */}
-      <span className="hidden sm:inline-block absolute -bottom-6 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-[10px] font-hand font-bold text-rasphera-orange bg-white px-2 py-0.5 rounded-full border border-rasphera-dark shadow-sm opacity-90 group-hover:opacity-100 transition-opacity pointer-events-none">
-        {style.isDockedOnHistory ? 'Roll on Y!' : 'Roll me!'}
+      {/* Interactive Tooltip Pill with subtle bounce / pulse */}
+      <span className="hidden sm:inline-flex items-center gap-1 absolute -bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap text-[11px] font-hand font-bold text-rasphera-orange bg-white px-2.5 py-0.5 rounded-full border border-rasphera-dark shadow-solid opacity-95 group-hover:opacity-100 group-hover:scale-105 transition-all pointer-events-none animate-pulse-subtle">
+        <span>🎲</span>
+        <span>{style.isDockedOnHistory ? 'Roll on Y!' : 'Roll me!'}</span>
       </span>
     </div>
   );

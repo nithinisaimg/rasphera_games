@@ -148,6 +148,26 @@
   animation: pulse-subtle 3s ease-in-out infinite;
 }
 
+/* Dedicated Tactile Wooden Dice Animations */
+@keyframes dice-float-idle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(-3deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg) scale(1.03);
+  }
+  75% {
+    transform: translateY(-4px) rotate(3deg);
+  }
+}
+
+.animate-dice-float {
+  animation: dice-float-idle 4s ease-in-out infinite;
+}
+
 /* Hide scroll layout in the rightmost part of the website */
 html {
   scroll-behavior: smooth;

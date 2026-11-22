@@ -74,7 +74,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
                   <img
                     src="/crowned_dice.png"
                     alt="RASPHERA Crowned Wooden Dice"
-                    className="h-7 sm:h-9 md:h-10 w-auto object-contain drop-shadow-md select-none"
+                    className="h-7 sm:h-9 md:h-10 w-auto object-contain drop-shadow-md select-none animate-float-gentle"
                   />
                 </div>
 
