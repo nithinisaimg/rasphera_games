@@ -2,8 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/dice_logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>404 - The Game Is On, But This Page Isn't | RASPHERA Games</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,29 +17,46 @@
         width: 100vw;
         height: 100vh;
         overflow: hidden;
-        background-color: #EAE8E3;
+        position: fixed;
+        touch-action: none;
+        overscroll-behavior: none;
+        background-color: #E1E1E1;
         font-family: 'Plus Jakarta Sans', sans-serif;
       }
       .fullscreen-container {
-        position: relative;
+        position: fixed;
+        inset: 0;
         width: 100vw;
         height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        background-color: #E1E1E1;
+      }
+      .img-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        max-width: 100vw;
+        max-height: 100vh;
+        aspect-ratio: 1024 / 575;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .fullscreen-img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         object-position: center;
         display: block;
         user-select: none;
+        pointer-events: none;
       }
       .btn-container {
         position: absolute;
-        bottom: 36px;
+        bottom: 7%;
         left: 50%;
         transform: translateX(-50%);
         z-index: 30;
@@ -55,16 +71,17 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
         font-size: 15px;
-        padding: 12px 28px;
+        padding: 10px 24px;
         border-radius: 12px;
         border: 2.5px solid #171412;
         box-shadow: 4px 4px 0px #171412;
         text-decoration: none;
         transition: all 0.2s ease;
         cursor: pointer;
+        white-space: nowrap;
       }
       .back-btn:hover {
-        background-color: #E65D00;
+        background-color: #E05D07;
         transform: translate(-2px, -2px);
         box-shadow: 6px 6px 0px #171412;
       }
@@ -73,12 +90,9 @@
         box-shadow: 2px 2px 0px #171412;
       }
       @media (max-width: 640px) {
-        .btn-container {
-          bottom: 20px;
-        }
         .back-btn {
           font-size: 13px;
-          padding: 10px 20px;
+          padding: 8px 18px;
           border-width: 2px;
         }
       }
@@ -86,12 +100,14 @@
   </head>
   <body>
     <div class="fullscreen-container">
-      <img src="/404.jpg" alt="404 Error - The game is on, but this page isn't." class="fullscreen-img" />
-      <div class="btn-container">
-        <a href="/" class="back-btn" id="home-link">
-          <span>←</span>
-          <span>BACK TO PLAY AREA</span>
-        </a>
+      <div class="img-wrapper">
+        <img src="/404.jpg" alt="404 Error - The game is on, but this page isn't." class="fullscreen-img" />
+        <div class="btn-container">
+          <a href="/" class="back-btn" id="home-link">
+            <span>←</span>
+            <span>BACK TO PLAY AREA</span>
+          </a>
+        </div>
       </div>
     </div>
 
