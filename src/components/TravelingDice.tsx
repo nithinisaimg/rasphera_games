@@ -31,11 +31,11 @@ export const TravelingDice: React.FC<TravelingDiceProps> = ({
 
   const targetProgressRef = useRef(0);
   const currentProgressRef = useRef(0);
-  const isLoopRunningRef = useRef(false);
   const animFrameIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     const updateMotion = () => {
+      animFrameIdRef.current = null;
       const container = containerRef.current;
       const startEl = document.getElementById('hero-dice-anchor');
       const endEl = document.getElementById('history-dice-target');
@@ -48,12 +48,6 @@ export const TravelingDice: React.FC<TravelingDiceProps> = ({
       const cRect = container.getBoundingClientRect();
       const sRect = startEl.getBoundingClientRect();
       const eRect = endEl.getBoundingClientRect();
-
-      // If dimensions are not yet laid out by browser, retry on next frame
-      if (sRect.width === 0 || eRect.width === 0) {
-        animFrameIdRef.current = requestAnimationFrame(updateMotion);
-        return;
-      }
 
       // Start and end positions relative to the container
       const startX = sRect.left - cRect.left;
@@ -104,26 +98,25 @@ export const TravelingDice: React.FC<TravelingDiceProps> = ({
       // Continue animation loop if still interpolating or user is scrolling
       if (Math.abs(diff) > 0.0008) {
         animFrameIdRef.current = requestAnimationFrame(updateMotion);
-      } else {
-        isLoopRunningRef.current = false;
-        animFrameIdRef.current = null;
       }
     };
 
     const wakeLoop = () => {
-      if (!isLoopRunningRef.current) {
-        isLoopRunningRef.current = true;
-        animFrameIdRef.current = requestAnimationFrame(updateMotion);
+      if (animFrameIdRef.current) {
+        cancelAnimationFrame(animFrameIdRef.current);
       }
+      animFrameIdRef.current = requestAnimationFrame(updateMotion);
     };
 
-    // Initial positioning calculation & font loading synchronization
+    // Run immediately and schedule frame
+    updateMotion();
     wakeLoop();
 
     // Trigger multiple layout checks to handle font/asset rendering settling
-    const t1 = setTimeout(wakeLoop, 60);
-    const t2 = setTimeout(wakeLoop, 200);
-    const t3 = setTimeout(wakeLoop, 500);
+    const t1 = setTimeout(wakeLoop, 50);
+    const t2 = setTimeout(wakeLoop, 150);
+    const t3 = setTimeout(wakeLoop, 350);
+    const t4 = setTimeout(wakeLoop, 700);
 
     if (document.fonts) {
       document.fonts.ready.then(() => {
@@ -152,6 +145,7 @@ export const TravelingDice: React.FC<TravelingDiceProps> = ({
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
+      clearTimeout(t4);
       if (resizeObserver) {
         resizeObserver.disconnect();
       }
@@ -159,6 +153,7 @@ export const TravelingDice: React.FC<TravelingDiceProps> = ({
       window.removeEventListener('resize', wakeLoop);
       if (animFrameIdRef.current) {
         cancelAnimationFrame(animFrameIdRef.current);
+        animFrameIdRef.current = null;
       }
     };
   }, [containerRef]);
