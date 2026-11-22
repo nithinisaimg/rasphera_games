@@ -12,9 +12,26 @@ import { CommunityBanner } from './components/CommunityBanner';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { BookingModal } from './components/BookingModal';
+import { NotFound } from './components/NotFound';
 import confetti from 'canvas-confetti';
 
 export function App() {
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    return window.location.pathname;
+  });
+  const [currentHash, setCurrentHash] = useState<string>(() => {
+    return window.location.hash;
+  });
+
+  const is404 = (() => {
+    if (currentHash === '#404') return true;
+    const p = currentPath.replace(/\/+$/, '') || '/';
+    if (p === '' || p === '/' || p === '/index.html' || p === '/rasphera_games' || p === '/rasphera_games/index.html') {
+      return false;
+    }
+    return true;
+  })();
+
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState<string>('half-day-retreat');
 
@@ -25,15 +42,37 @@ export function App() {
 
   const heroStoryContainerRef = useRef<HTMLDivElement>(null);
 
+  // Synchronize route changes on back/forward and hash changes
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+      setCurrentHash(window.location.hash);
+    };
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
+  }, []);
+
   // Smoothly scroll to target section when hash is present
   useEffect(() => {
-    if (window.location.hash) {
+    if (window.location.hash && window.location.hash !== '#404') {
       const el = document.querySelector(window.location.hash);
       if (el) {
         setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
       }
     }
-  }, []);
+  }, [currentHash]);
+
+  const handleBackToHome = () => {
+    const basePath = window.location.pathname.startsWith('/rasphera_games') ? '/rasphera_games/' : '/';
+    window.history.pushState({}, '', basePath);
+    setCurrentPath(basePath);
+    setCurrentHash('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const rollQuotes = [
     "1 — Strategy: Challenge your next move!",
@@ -96,6 +135,10 @@ export function App() {
   const handleSelectExperience = (expId: string) => {
     setSelectedExperience(expId);
   };
+
+  if (is404) {
+    return <NotFound onBackToHome={handleBackToHome} />;
+  }
 
   return (
     <div className="min-h-screen bg-rasphera-cream text-rasphera-dark flex flex-col font-body selection:bg-rasphera-orange selection:text-white">

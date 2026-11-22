@@ -88,6 +88,11 @@ export const Footer: React.FC = () => {
                   <span className="text-rasphera-orange">›</span> Contact & Booking
                 </a>
               </li>
+              <li className="pt-2 border-t border-white/10">
+                <a href="#404" className="text-white/40 hover:text-rasphera-orange transition-colors flex items-center gap-2 text-[11px]">
+                  <span className="text-rasphera-orange/60">›</span> 404 Error Page
+                </a>
+              </li>
             </ul>
           </div>
 
